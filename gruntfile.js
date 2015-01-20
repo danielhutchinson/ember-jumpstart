@@ -1,10 +1,10 @@
 var appConfig = require('./appConfig.js');
 
 module.exports = function (grunt) {
+  grunt.loadNpmTasks('grunt-express');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-express');
 
   grunt.initConfig({
     /***
@@ -55,6 +55,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build:vendor', ['concat:vendor', 'uglify:vendor']);
   grunt.registerTask('build', ['clean', 'build:vendor']);
-  grunt.registerTask('serve', ['express', 'express-keepalive']);
+  grunt.registerTask('serve', ['build', 'express', 'express-keepalive']);
 
 };
