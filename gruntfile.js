@@ -3,8 +3,12 @@ var appConfig = require('./appConfig.js');
 module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
   grunt.initConfig({
+    /***
+    Clean the build directory */
+    clean: ['app/build'],
     /***
     Concatenate JavaScript Files */
     concat: {
@@ -33,6 +37,7 @@ module.exports = function (grunt) {
     /////////////////////
   });
 
-  grunt.registerTask('build:vendor', ['concat:vendor', 'uglify:vendor'])
+  grunt.registerTask('build:vendor', ['concat:vendor', 'uglify:vendor']);
+  grunt.registerTask('build', ['clean', 'build:vendor']);
 
 };
