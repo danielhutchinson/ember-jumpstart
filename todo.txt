@@ -1,8 +1,5 @@
 Still to do (in no particular order)
 
-* Ember Templates Compiler
-* ES6 Modules for Ember
-* Concat and Minify Application Files (as ES6 Modules!)
 * SCSS Transpiler
 * Add Bootstrap dependency
 * Add FontAwesome dependency

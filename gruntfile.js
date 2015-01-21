@@ -6,6 +6,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-es6-module-transpiler');
+  grunt.loadNpmTasks('grunt-ember-templates');
 
   grunt.initConfig({
     /***
@@ -74,6 +75,27 @@ module.exports = function (grunt) {
         files: {
           'app/build/app.min.js': ['<%= concat.app.dest %>']
         }
+      },
+      templates: {
+        files: {
+          'app/build/templates.min.js' : ['app/build/templates.js']
+        }
+      }
+    },
+
+    /***
+    Compile Ember Templates */
+    emberTemplates: {
+      compile: {
+        options: {
+          templateBasePath: 'app/templates',
+          templateName: function (sourceFile) {
+            return sourceFile.replace("templates/", "");
+          }
+        },
+        files: {
+          'app/build/templates.js' : 'app/templates/**/*.handlebars'
+        }
       }
     }
 
@@ -82,7 +104,9 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build:vendor', ['concat:vendor', 'uglify:vendor']);
   grunt.registerTask('build:app', ['transpile:app', 'concat:app', 'uglify:app']);
-  grunt.registerTask('build', ['build:vendor', 'build:app']);
+  grunt.registerTask('build:templates', ['emberTemplates', 'uglify:templates']);
+  grunt.registerTask('build', ['build:vendor', 'build:templates', 'build:app']);
   grunt.registerTask('serve', ['express', 'express-keepalive']);
+  grunt.registerTask('default', ['build', 'serve']);
 
 };
