@@ -6,7 +6,9 @@ module.exports = {
       scripts: [
         'bower_components/jquery/dist/jquery.js',
         'bower_components/handlebars/handlebars.js',
-        'bower_components/ember/ember.js'
+        'bower_components/ember/ember.js',
+        'app/lib/loader.js',
+        'app/lib/ember-resolver.js'
       ]
   }
 

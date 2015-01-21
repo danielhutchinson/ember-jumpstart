@@ -9,8 +9,20 @@
 
 </head>
 <body>
-  <h1>Ember JumpStart</h1>
+
+<script type="text/x-handlebars" id="index">
+  <ul>
+    {{#each colour in model}}
+        <li>{{colour}}</li>
+    {{/each}}
+  </ul>
+</script>
+
 
   <script src="build/vendor.min.js"></script>
+  <script src="build/app.min.js"></script>
+  <script>
+  window.App = require('example/app')["default"].create();
+  </script>
 </body>
 </html>

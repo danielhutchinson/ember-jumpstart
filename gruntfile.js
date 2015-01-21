@@ -5,6 +5,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-es6-module-transpiler');
 
   grunt.initConfig({
     /***
@@ -22,6 +23,23 @@ module.exports = function (grunt) {
     },
 
     /***
+    Transpile ES6 Files */
+    transpile: {
+        app: {
+            type: 'amd',
+            moduleName: function (path) {
+                return 'example/' + path;
+            },
+            files: [{
+                expand: true,
+                cwd: 'app/scripts/',
+                src: '**/*.js',
+                dest: 'app/build/transpiled/'
+            }]
+        }
+    },
+
+    /***
     Clean the build directory */
     clean: ['app/build'],
 
@@ -34,6 +52,10 @@ module.exports = function (grunt) {
       vendor: {
         src: appConfig.vendorDependencies.scripts,
         dest: 'app/build/vendor.js'
+      },
+      app: {
+        src: 'app//build/transpiled/**/*.js',
+        dest: 'app/build/app.js'
       }
     },
 
@@ -47,6 +69,11 @@ module.exports = function (grunt) {
         files: {
           'app/build/vendor.min.js': ['<%= concat.vendor.dest %>']
         }
+      },
+      app: {
+        files: {
+          'app/build/app.min.js': ['<%= concat.app.dest %>']
+        }
       }
     }
 
@@ -54,7 +81,8 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build:vendor', ['concat:vendor', 'uglify:vendor']);
-  grunt.registerTask('build', ['clean', 'build:vendor']);
-  grunt.registerTask('serve', ['build', 'express', 'express-keepalive']);
+  grunt.registerTask('build:app', ['transpile:app', 'concat:app', 'uglify:app']);
+  grunt.registerTask('build', ['build:vendor', 'build:app']);
+  grunt.registerTask('serve', ['express', 'express-keepalive']);
 
 };
