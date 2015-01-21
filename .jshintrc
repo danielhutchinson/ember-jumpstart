@@ -1,0 +1,7 @@
+{
+  "esnext": true,
+  "indent": 2,
+  "camelcase": true,
+  "curly": true,
+  "strict": false
+}

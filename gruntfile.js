@@ -7,6 +7,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-es6-module-transpiler');
   grunt.loadNpmTasks('grunt-ember-templates');
+  grunt.loadNpmTasks('grunt-contrib-jshint');
 
   grunt.initConfig({
     /***
@@ -24,20 +25,29 @@ module.exports = function (grunt) {
     },
 
     /***
+    Run JSHint on app files */
+    jshint: {
+      all: ['app/scripts/**/*.js'],
+      options: {
+        jshintrc: '.jshintrc'
+      }
+    },
+
+    /***
     Transpile ES6 Files */
     transpile: {
-        app: {
-            type: 'amd',
-            moduleName: function (path) {
-                return 'example/' + path;
-            },
-            files: [{
-                expand: true,
-                cwd: 'app/scripts/',
-                src: '**/*.js',
-                dest: 'app/build/transpiled/'
-            }]
-        }
+      app: {
+          type: 'amd',
+          moduleName: function (path) {
+              return 'example/' + path;
+          },
+          files: [{
+              expand: true,
+              cwd: 'app/scripts/',
+              src: '**/*.js',
+              dest: 'app/build/transpiled/'
+          }]
+      }
     },
 
     /***
