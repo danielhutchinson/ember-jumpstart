@@ -4,6 +4,5 @@ Still to do (in no particular order)
 * Add Bootstrap dependency
 * Add FontAwesome dependency
 * Auto-Prefix CSS files
-* JSHint - App Files
 * Add Unit Testing Libs
 * Add Ember-Data

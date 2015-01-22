@@ -8,6 +8,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-es6-module-transpiler');
   grunt.loadNpmTasks('grunt-ember-templates');
   grunt.loadNpmTasks('grunt-contrib-jshint');
+  grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.initConfig({
     /***
@@ -16,7 +17,7 @@ module.exports = function (grunt) {
       all: {
         options: {
           port: 3000,
-          hostname: "0.0.0.0",
+          hostname: "*",
           open: true,
           livereload: true,
           bases: ['app']
@@ -107,16 +108,34 @@ module.exports = function (grunt) {
           'app/build/templates.js' : 'app/templates/**/*.handlebars'
         }
       }
+    },
+
+    /***
+    Grunt Contrib Watch */
+    watch: {
+      options: {
+        spawn: true,
+        interrupt: true,
+        //livereload: true
+      },
+      app: {
+        files: 'app/scripts/**/*.js',
+        tasks: ['build:app']
+      },
+      templates: {
+        files: 'app/templates/**/*.handlebars',
+        tasks: ['build:templates']
+      }
     }
 
     /////////////////////
   });
 
   grunt.registerTask('build:vendor', ['concat:vendor', 'uglify:vendor']);
-  grunt.registerTask('build:app', ['transpile:app', 'concat:app', 'uglify:app']);
+  grunt.registerTask('build:app', ['jshint', 'transpile:app', 'concat:app', 'uglify:app']);
   grunt.registerTask('build:templates', ['emberTemplates', 'uglify:templates']);
   grunt.registerTask('build', ['build:vendor', 'build:templates', 'build:app']);
-  grunt.registerTask('serve', ['express', 'express-keepalive']);
+  grunt.registerTask('serve', ['express', 'watch']);
   grunt.registerTask('default', ['build', 'serve']);
 
 };
