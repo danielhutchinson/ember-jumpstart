@@ -9,6 +9,9 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-ember-templates');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-copy');
+  grunt.loadNpmTasks('grunt-contrib-cssmin');
+  grunt.loadNpmTasks('grunt-libsass');
 
   grunt.initConfig({
     /***
@@ -63,11 +66,15 @@ module.exports = function (grunt) {
       },
       vendor: {
         src: appConfig.vendorDependencies.scripts,
-        dest: 'app/build/vendor.js'
+        dest: 'app/build/js/vendor.js'
       },
       app: {
         src: 'app/temp/transpiled/**/*.js',
-        dest: 'app/build/app.js'
+        dest: 'app/build/js/app.js'
+      },
+      styles: {
+        src: appConfig.vendorDependencies.styles,
+        dest: 'app/build/css/vendor.css'
       }
     },
 
@@ -79,17 +86,32 @@ module.exports = function (grunt) {
       },
       vendor: {
         files: {
-          'app/build/vendor.min.js': ['<%= concat.vendor.dest %>']
+          'app/build/js/vendor.min.js': ['<%= concat.vendor.dest %>']
         }
       },
       app: {
         files: {
-          'app/build/app.min.js': ['<%= concat.app.dest %>']
+          'app/build/js/app.min.js': ['<%= concat.app.dest %>']
         }
       },
       templates: {
         files: {
-          'app/build/templates.min.js' : ['app/build/templates.js']
+          'app/build/js/templates.min.js' : ['app/build/js/templates.js']
+        }
+      }
+    },
+
+    /***
+    Minify CSS Files */
+    cssmin: {
+      vendor: {
+        files: {
+          'app/build/css/vendor.min.css': ['app/build/css/vendor.css']
+        }
+      },
+      app: {
+        files: {
+          'app/build/css/app.min.css': ['app/build/css/app.css']
         }
       }
     },
@@ -105,13 +127,33 @@ module.exports = function (grunt) {
           }
         },
         files: {
-          'app/build/templates.js' : 'app/templates/**/*.handlebars'
+          'app/build/js/templates.js' : 'app/templates/**/*.handlebars'
         }
       }
     },
 
     /***
-    Grunt Contrib Watch */
+    Copy Files */
+    copy: {
+      fonts: {
+        expand: true,
+        flatten: true,
+        src: appConfig.vendorDependencies.fonts,
+        dest: 'app/build/fonts/'
+      }
+    },
+
+    /***
+    Compile SASS Files */
+    libsass: {
+      app: {
+        src: 'app/styles/main.scss',
+        dest: 'app/build/css/app.css'
+      }
+    },
+
+    /***
+    Watchers */
     watch: {
       options: {
         spawn: true,
@@ -125,16 +167,21 @@ module.exports = function (grunt) {
       templates: {
         files: 'app/templates/**/*.handlebars',
         tasks: ['build:templates']
+      },
+      styles: {
+        files: 'app/styles/**/*.scss',
+        tasks: ['build:styles']
       }
     }
 
     /////////////////////
   });
 
-  grunt.registerTask('build:vendor', ['concat:vendor', 'uglify:vendor']);
+  grunt.registerTask('build:vendor', ['concat:vendor', 'concat:styles', 'copy:fonts', 'cssmin:vendor', 'uglify:vendor']);
+  grunt.registerTask('build:styles', ['libsass', 'cssmin:app']);
   grunt.registerTask('build:app', ['jshint', 'transpile:app', 'concat:app', 'uglify:app']);
   grunt.registerTask('build:templates', ['emberTemplates', 'uglify:templates']);
-  grunt.registerTask('build', ['clean', 'build:vendor', 'build:templates', 'build:app']);
+  grunt.registerTask('build', ['clean', 'build:vendor', 'build:styles', 'build:templates', 'build:app']);
   grunt.registerTask('serve', ['express', 'watch']);
   grunt.registerTask('default', ['build', 'serve']);
 

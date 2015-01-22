@@ -1,0 +1,13 @@
+@import '_theme';
+
+body {
+  font-family: 'Open Sans', 'Helvetica', 'Arial', sans-serif;
+  font-size: 16px;
+  line-height: 16px;
+  color: $text-color;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Montserrat', 'Helvetica', 'Arial', sans-serif;
+  color: $heading-color;
+}
