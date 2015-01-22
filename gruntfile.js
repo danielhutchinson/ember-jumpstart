@@ -46,14 +46,14 @@ module.exports = function (grunt) {
               expand: true,
               cwd: 'app/scripts/',
               src: '**/*.js',
-              dest: 'app/build/transpiled/'
+              dest: 'app/temp/transpiled/'
           }]
       }
     },
 
     /***
-    Clean the build directory */
-    clean: ['app/build'],
+    Clean the build and temp directories */
+    clean: ['app/build', 'app/temp'],
 
     /***
     Concatenate JavaScript Files */
@@ -66,7 +66,7 @@ module.exports = function (grunt) {
         dest: 'app/build/vendor.js'
       },
       app: {
-        src: 'app//build/transpiled/**/*.js',
+        src: 'app/temp/transpiled/**/*.js',
         dest: 'app/build/app.js'
       }
     },
@@ -134,7 +134,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build:vendor', ['concat:vendor', 'uglify:vendor']);
   grunt.registerTask('build:app', ['jshint', 'transpile:app', 'concat:app', 'uglify:app']);
   grunt.registerTask('build:templates', ['emberTemplates', 'uglify:templates']);
-  grunt.registerTask('build', ['build:vendor', 'build:templates', 'build:app']);
+  grunt.registerTask('build', ['clean', 'build:vendor', 'build:templates', 'build:app']);
   grunt.registerTask('serve', ['express', 'watch']);
   grunt.registerTask('default', ['build', 'serve']);
 
