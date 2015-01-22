@@ -44,7 +44,7 @@ module.exports = function (grunt) {
       app: {
           type: 'amd',
           moduleName: function (path) {
-              return 'example/' + path;
+              return appConfig.applicationName + '/' + path;
           },
           files: [{
               expand: true,

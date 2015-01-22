@@ -1,6 +1,6 @@
 module.exports = {
 
-  applicationName: 'app',
+  applicationName: 'example',
 
   vendorDependencies: {
       scripts: [

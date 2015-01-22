@@ -2,7 +2,7 @@ var Colour = Ember.Object.extend();
 
 Colour.reopenClass({
   find: function () {
-    return ['red', 'blue', 'green'];
+    return ['red', 'blue', 'yellow'];
   }
 });
 
