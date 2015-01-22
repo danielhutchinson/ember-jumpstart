@@ -1,8 +1,4 @@
 Still to do (in no particular order)
 
-* SCSS Transpiler
-* Add Bootstrap dependency
-* Add FontAwesome dependency
-* Auto-Prefix CSS files
 * Add Unit Testing Libs
 * Add Ember-Data

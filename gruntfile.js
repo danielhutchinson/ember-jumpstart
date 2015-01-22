@@ -12,6 +12,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-copy');
   grunt.loadNpmTasks('grunt-contrib-cssmin');
   grunt.loadNpmTasks('grunt-libsass');
+  grunt.loadNpmTasks('grunt-autoprefixer');
 
   grunt.initConfig({
     /***
@@ -117,6 +118,19 @@ module.exports = function (grunt) {
     },
 
     /***
+    Automatically add vendor prefix to CSS files */
+    autoprefixer: {
+      options: {
+        browsers: ['last 2 versions'],
+        cascade: false,
+      },
+      app: {
+        src: 'app/build/css/app.css',
+        dest: 'app/build/css/app.css'
+      }
+    },
+
+    /***
     Compile Ember Templates */
     emberTemplates: {
       compile: {
@@ -178,7 +192,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('build:vendor', ['concat:vendor', 'concat:styles', 'copy:fonts', 'cssmin:vendor', 'uglify:vendor']);
-  grunt.registerTask('build:styles', ['libsass', 'cssmin:app']);
+  grunt.registerTask('build:styles', ['libsass', 'autoprefixer', 'cssmin:app']);
   grunt.registerTask('build:app', ['jshint', 'transpile:app', 'concat:app', 'uglify:app']);
   grunt.registerTask('build:templates', ['emberTemplates', 'uglify:templates']);
   grunt.registerTask('build', ['clean', 'build:vendor', 'build:styles', 'build:templates', 'build:app']);
