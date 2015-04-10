@@ -1,5 +1,5 @@
 # This project is no longer supported
-This project will not be updated for new versions of Ember, it was build as a learning experience. If you are looking for a way to qucikly jumpstart your ember projects you should use ember-cli.
+This project will not be updated for new versions of Ember, it was built as a learning experience. If you are looking for a way to quickly jumpstart your ember projects you should use ember-cli.
 
 # ember-jumpstart
 Ember-Jumpstart is a starter project for [EmberJS](http://emberjs.com) which
